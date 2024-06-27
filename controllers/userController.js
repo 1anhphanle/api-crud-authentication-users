@@ -33,11 +33,36 @@ const createUser = async (req, res) => {
     }
 };
 
-// ... Các controller khác cho update, delete, etc.
+const updateUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { username, password, email } = req.body;
+
+        // Validate dữ liệu (nếu cần)
+
+        const updatedUser = await User.update(id, username, password, email);
+        res.json(updatedUser);
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
+
+const deleteUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await User.delete(id);
+        res.json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ error: error.message });
+    }
+};
 
 module.exports = {
     getAllUsers,
     getUserById,
     createUser,
-    // ...
+    updateUser,
+    deleteUser,
 };

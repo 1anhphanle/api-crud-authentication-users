@@ -19,7 +19,18 @@ class User {
         return rows[0];
     }
 
-    // ... Các phương thức update, delete, etc.
+    static async update(id, username, password, email) {
+        const { rows } = await pool.query(
+            'UPDATE users SET username = $1, password = $2, email = $3 WHERE id = $4 RETURNING *',
+            [username, password, email, id]
+        );
+        return rows[0];
+    }
+
+    static async delete(id) {
+        const { rows } = await pool.query('DELETE FROM users WHERE id = $1', [id]);
+        return rows[0];
+    }
 }
 
 module.exports = User;
